@@ -35,8 +35,18 @@ https://github.com/metanull-operator/eth2-ubuntu/blob/master/v2/setup.md
 ## issue
 ```sh
 # on GETH sometimes
-Served engine_newPayloadV2               conn=127.0.0.1:51848 reqid=2 duration=10.062452ms err="Invalid parameters" errdata="{Error:non-nil withdrawals pre-shanghai}"
+1 . ( started Geth in mainnet mode but Prysm on the Testnet)
+ engine_newPayloadV2               conn=127.0.0.1:51848 reqid=2 duration=10.062452ms err="Invalid parameters" errdata="{Error:non-nil withdrawals pre-shanghai}"
+ ```
+## Resolved
+![Alt text](<Screen Shot 2024-01-09 at 18.20.05.png>)
+Commands:
+```sh
+geth --sepolia --syncmode full  -datadir "/home/soc/source/dist/data/" --authrpc.addr localhost --authrpc.port 8551 --authrpc.vhosts localhost --authrpc.jwtsecret=/home/soc/source/jwt.hex
+./prysm.sh beacon-chain --execution-endpoint=http://localhost:8551 --sepolia --jwt-secret=/home/soc/source/jwt.hex --genesis-state=/home/soc/source/genesis.ssz --checkpoint-sync-url=https://sepolia.beaconstate.info --genesis-beacon-api-url=https://sepolia.beaconstate.info --datadir=/home/soc/source/dist/data/
+```
 # on Prysm
+```sh
 [2024-01-09 04:32:21]  WARN initial-sync: Skip processing batched blocks error=beacon node doesn't have a parent in db with root: 0xb2f489a95fc5fcb785d8e11c5e8b12363485c652ea7d2ebd31e76bb4f40f2dd3 (in processBatchedBlocks, slot=4084257)
 related: https://github.com/ethereum/go-ethereum/issues/27812
 ```
